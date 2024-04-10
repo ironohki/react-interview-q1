@@ -22,16 +22,7 @@ function App() {
 
   // Store list of locations. 
   const [locationsList, setLocationsList] = useState([]);
-  const [userEnteredRecords, setUserEnteredRecords] = useState([
-        <div className="row">
-          <div className="display_name">asdf</div>
-          <div className="display_location">place</div>
-        </div>,
-        <div className="row">
-          <div className="display_name">qwer</div>
-          <div className="display_location">location</div>
-        </div>
-    ]);
+  const [userEnteredRecords, setUserEnteredRecords] = useState([]);
 
   /* =============================
      ====== UseEffect Hooks ======
