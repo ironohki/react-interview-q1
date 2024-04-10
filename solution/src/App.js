@@ -15,13 +15,15 @@ function App() {
   const [nameValue, setNameValue] = useState("");
   const [locationValue, setLocationValue] = useState("");
 
-  // We track both if the name is valid and null. 
-  // We do not want to display an error when the user has entered nothing.
+  // Tracks both if the name is valid and null. 
+  // This prevents an error display when the user has entered nothing.
   const [nameIsValid, setNameIsValid] = useState(false);
   const [nameIsNull, setNameIsNull] = useState(true);
 
   // Store list of locations. 
   const [locationsList, setLocationsList] = useState([]);
+
+  // Build the displayed list of records.
   const [userEnteredRecords, setUserEnteredRecords] = useState([]);
 
   /* =============================
@@ -31,20 +33,21 @@ function App() {
   // This useEffect will trigger when nameValue changes.
   // It adds a debounce buffer, to reduce the number of API calls. 
   useEffect(() => {
-    // sets the loading state displayed to the user.
+    // Sets the loading state displayed to the user.
     if (nameValue !== "") {
       setIsLoading(true);
     }
 
-    // creates a 300 millisecond timer before triggering checkName to allow the user to finish typing. 
+    // Creates a 300 millisecond timer before triggering checkName to allow the user to finish typing. 
     const debounceCheckName = setTimeout(() => {
       validateName();
     }, 300);
 
-    // resets the debounce on every keypress
+    // Resets the debounce on every keypress.
     return () => clearTimeout(debounceCheckName)
   }, [nameValue]);
 
+  // Load the locations once before component load.
   useEffect(() => {
     loadLocations();
   },[]);
@@ -53,11 +56,12 @@ function App() {
      ====== Event Handlers ======
      ============================ */
 
-  // Binds nameValue to on change input.
+  // Binds nameValue to a change in input.
   const onChangeName = async (event) => {
     setNameValue(event.target.value);
   };
 
+  // Binds location value to a change in input. 
   const onChangeLocation = (event) => {
     setLocationValue(event.target.value);
   }
@@ -65,33 +69,38 @@ function App() {
   // Populate the user entered data when the user clicks Add. 
   const onClickAdd = () => {
     // Only add a new record if values have been entered. 
-    // Optionally, we could provide instructions if the form is invalid.
+    // Optionally, we could provide feedback if the form is invalid.
     if (nameValue !== "" && locationValue !== "") {
+      // Define a new HTML entity to add. 
       const newRecord = (
         <div className="row">
           <div className="display_name">{ nameValue }</div>
           <div className="display_location">{ locationValue }</div>
         </div>
       );
+
+      // Add the entity to the useState array using a spread operator.
       setUserEnteredRecords(userEnteredRecords => [...userEnteredRecords, newRecord]);
+
+      // Reset the form. 
       setNameValue("");
       setLocationValue("");
     }
   };
 
   // Clear the user entered data when the user clicks Clear. 
-  // Clears any user entered data as well. 
+  // Additionally clears any user entered data. 
   const onClickClear = () => {
     setUserEnteredRecords([]);
     setNameValue("");
     setLocationValue("");
   };
 
-  // This async method will check if the name is valid. 
-  // It looks at the entered useState value.
+  // Check if the name is valid asynchronously using the entered useState value.
   const validateName = async () => {
+    // Do not send an API call if the value is empty. 
     if (nameValue === "") {
-      // No need to make an API call if the value is null. 
+      // The updated useState value will not be available to test against until redraw.
       setNameIsNull(true);
       setIsLoading(false);
     } else {
@@ -106,8 +115,10 @@ function App() {
     }
   };
 
-  const loadLocations = () => {
-    const response = getLocations()
+  // Method to load the locations and save them to useState. 
+  // Called by useEffect once on component load.
+  const loadLocations = async () => {
+    const response = await getLocations()
       .then((result) => {
         setLocationsList(result);
       });
@@ -178,6 +189,7 @@ function App() {
         <button onClick={onClickAdd} disabled={nameValue === "" || locationValue === "" || isLoading === true || nameIsValid === false}>Add</button>
       </div>
 
+      {/* Optionally we could use an HTML table here, as it is tabular data. I chose to use div elements for more control with Flexbox. */}
       <div className="table">
         <div className="header">
           <div className="display_name">Name</div>

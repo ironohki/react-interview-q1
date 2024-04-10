@@ -1,3 +1,5 @@
+/* Leaving top level style unchanged. */
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -6,6 +8,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* Most stlyes are applied with flexbox display. */
 
 .app {
   display: flex;
@@ -37,10 +41,6 @@ select {
   width: 100%;
 }
 
-.form_name_validation {
-
-}
-
 .submit {
   display: flex;
   justify-content: flex-end;
@@ -70,6 +70,7 @@ select {
 
 /* Monitor View */
 @media (min-width: 768px) {
+  /* Positions the validation message to align with the form on monitor view. */
   .form_name_validation {
     padding-left: 94px;
   }
