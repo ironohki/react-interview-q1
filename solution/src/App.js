@@ -22,7 +22,16 @@ function App() {
 
   // Store list of locations. 
   const [locationsList, setLocationsList] = useState([]);
-  const [userEnteredRecords, setUserEnteredRecords] = useState([]);
+  const [userEnteredRecords, setUserEnteredRecords] = useState([
+        <div className="row">
+          <div className="display_name">asdf</div>
+          <div className="display_location">place</div>
+        </div>,
+        <div className="row">
+          <div className="display_name">qwer</div>
+          <div className="display_location">location</div>
+        </div>
+    ]);
 
   /* =============================
      ====== UseEffect Hooks ======
@@ -64,15 +73,19 @@ function App() {
 
   // Populate the user entered data when the user clicks Add. 
   const onClickAdd = () => {
-    const newRecord = (
-      <div>
-        <div>{ nameValue }</div>
-        <div>{ locationValue }</div>
-      </div>
-    );
-    setUserEnteredRecords(userEnteredRecords => [...userEnteredRecords, newRecord]);
-    setNameValue("");
-    setLocationValue("");
+    // Only add a new record if values have been entered. 
+    // Optionally, we could provide instructions if the form is invalid.
+    if (nameValue !== "" && locationValue !== "") {
+      const newRecord = (
+        <div className="row">
+          <div className="display_name">{ nameValue }</div>
+          <div className="display_location">{ locationValue }</div>
+        </div>
+      );
+      setUserEnteredRecords(userEnteredRecords => [...userEnteredRecords, newRecord]);
+      setNameValue("");
+      setLocationValue("");
+    }
   };
 
   // Clear the user entered data when the user clicks Clear. 
@@ -131,48 +144,56 @@ function App() {
     ============================== */
 
   return (
-    <div className="App">
-      <>
-        <div>
-          <label>
-            Name
-          </label>
+    <div className="app">
+
+      <div className="form_name">
+        <label className="form_label">
+          Name
+        </label>
+        <div className="form_input">
           <input type="text" value={nameValue} onChange={onChangeName} />
-          { isLoading &&
-            <div className="loading">checking...</div>
-          }
-          { !nameIsNull && !isLoading && 
-            <>
-              { !nameIsValid && 
-                <div className="alert">This name has already been taken.</div>
-              }
-              { nameIsValid &&
-                <div className="alert">This name is good.</div>
-              }
-            </>
-          }
         </div>
-        <div> 
-          <label htmlFor="form_location">
-            Location
-          </label>
-          <select itemID="form_location" value={locationValue} onChange={onChangeLocation}>
+      </div>
+      <div className="form_name_validation">
+        { isLoading &&
+          <div className="loading">checking...</div>
+        }
+        { !nameIsNull && !isLoading && 
+          <>
+            { !nameIsValid && 
+              <div className="alert">This name has already been taken.</div>
+            }
+            { nameIsValid &&
+              <div className="success">This name is good.</div>
+            }
+          </>
+        }
+      </div>
+
+      <div className="form_location"> 
+        <label className="form_label">
+          Location
+        </label>
+        <div className="form_input">
+          <select value={locationValue} onChange={onChangeLocation}>
             <option>Select Location...</option>
             { locationOptions }
           </select>
         </div>
-        <div>
-          <button onClick={onClickClear}>Clear</button>
-          <button onClick={onClickAdd}>Add</button>
+      </div>
+
+      <div className="submit">
+        <button onClick={onClickClear}>Clear</button>
+        <button onClick={onClickAdd} disabled={nameValue === "" || locationValue === "" || isLoading === true || nameIsValid === false}>Add</button>
+      </div>
+
+      <div className="table">
+        <div className="header">
+          <div className="display_name">Name</div>
+          <div className="display_location">Location</div>
         </div>
-        <div className="table">
-          <div className="header">
-            <div>Name</div>
-            <div>Location</div>
-          </div>
-          { userEnteredRecords }
-        </div>
-      </>
+        { userEnteredRecords }
+      </div>
     </div>
   );
 }

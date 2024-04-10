@@ -7,7 +7,138 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+.app {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 10px;
+  padding: 20px;
+  max-width: 600px;
+}
+
+.form_name,
+.form_location {
+  display: flex;
+  gap: 10px;
+}
+
+.form_label {
+  width: 100px;
+}
+.form_input {
+  width: 100%;
+}
+
+input[type=text] {
+  width: 100%;
+  box-sizing: border-box;  
+}
+select {
+  width: 100%;
+}
+
+.form_name_validation {
+
+}
+
+.submit {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid;
+}
+
+.display_name, .display_location {
+  padding: 4px;
+}
+
+.display_name {
+  border-right: 2px solid;
+}
+
+.header, .row {
+  display: flex;
+  gap: 10px;
+}
+
+/* Applying some basic responsive rules. */
+
+/* Monitor View */
+@media (min-width: 768px) {
+  .form_name_validation {
+    padding-left: 94px;
+  }
+  .form_label {
+    text-align: right;
+  }
+  .display_name {
+    width: 300px;
+  }
+}
+
+/* Mobile View */
+@media (max-width: 767px) {
+  .form_name,
+  .form_location {
+    flex-direction: column;
+  }
+  .display_name {
+    width: 200px;
+  }
+}
+
+/* 
+Applying color schemes, reacting to user-client settings.
+This can be extended for accessibility to include high contrast modes.
+*/
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #000000;
+    color: #ffffff;
+  }
+  .table, .display_name {
+    border-color: 2px solid #ffffff;
+  }
+  .alert {
+    color: #FF9999;
+  }
+  .success {
+    color: #9999FF;
+  }
+  .row {
+    background-color: #222222;
+  }
+  .row:nth-child(even) {
+    background-color: #444444;
+  }
+}
+
+/* Light Mode */
+@media (prefers-color-scheme: light) {
+  body {
+    background: #ffffff;
+    color: #000000;
+  }
+  .table, .display_name {
+    border-color: #000000;
+  }
+  .alert {
+    color: #CC0000;
+  }
+  .success {
+    color: #0000CC;
+  }
+  .row {
+    background-color: #DDDDDD;
+  }
+  .row:nth-child(even) {
+    background-color: #BBBBBB;
+  }
 }
